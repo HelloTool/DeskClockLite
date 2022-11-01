@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Desk Clock Lite</string>
+    <string name="time_default" translatable="false">00:00:00</string>
+    <string name="date_default">Wednesday, December 31</string>
+    <string name="time_template" translatable="false">HH:mm:ss</string>
+    <string name="date_template">dd-MM %1$s</string>
+    <string name="week_1">Sunday</string>
+    <string name="week_2">Monday</string>
+    <string name="week_3">Tuesday</string>
+    <string name="week_4">Wednesday</string>
+    <string name="week_5">Thursday</string>
+    <string name="week_6">Friday</string>
+    <string name="week_7">Saturday</string>
+</resources>
