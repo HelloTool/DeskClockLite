@@ -4,4 +4,12 @@
     <style name="Theme.DeskClockLite" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
+    <style name="Theme.DeskClockLite.Light" parent="android:Theme.Holo.Light">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>
