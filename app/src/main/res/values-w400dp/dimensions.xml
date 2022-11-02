@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="time_size">96sp</dimen>
+    <dimen name="date_size">18sp</dimen>
+    <dimen name="date_bottom">16dp</dimen>
+</resources>

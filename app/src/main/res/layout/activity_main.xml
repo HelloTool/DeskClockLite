@@ -12,15 +12,15 @@
         android:layout_gravity="center"
         android:text="@string/time_default"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="80sp" />
+        android:textSize="@dimen/time_size" />
 
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/date_bottom"
         android:text="@string/date_default"
-        android:textSize="18sp" />
+        android:textSize="@dimen/date_size" />
 
 </FrameLayout>
