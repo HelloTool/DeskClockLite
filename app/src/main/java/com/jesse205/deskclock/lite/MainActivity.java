@@ -1,7 +1,6 @@
 package com.jesse205.deskclock.lite;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public class MainActivity extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener, Runnable {
     private boolean lightTheme = false;
     private boolean activityStarted = false;
     private Handler handler;
-    private Runnable runnable;
     private SharedPreferences sharedPreferences;
     private GestureDetector mGestureDetector;
     private int lastWeekDay;
@@ -32,14 +30,22 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
     private String lastTime;
     private String lastDate;
 
-    @SuppressLint("ClickableViewAccessibility")
+    private SimpleDateFormat timeFormat;
+    private SimpleDateFormat dateFormat;
+
+    private TextView timeView;
+    private TextView dateView;
+
+    private Calendar calendar = Calendar.getInstance();
+
+    @SuppressLint({"ClickableViewAccessibility", "SimpleDateFormat"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         lightTheme = sharedPreferences.getBoolean("light_theme", false);
-        if (lightTheme)//亮色主题
+        if (lightTheme)//Light theme
             setTheme(R.style.Theme_DeskClockLite_Light);
         else
             setTheme(R.style.Theme_DeskClockLite);
@@ -48,8 +54,6 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         mGestureDetector = new GestureDetector(this);
         mGestureDetector.setIsLongpressEnabled(true);
         FrameLayout mainLayout = findViewById(R.id.mainLayout);
-        mainLayout.setFocusable(true);
-        //mainLayout.setClickable(true);
         mainLayout.setLongClickable(true);
         mainLayout.setOnTouchListener(this);
 
@@ -58,134 +62,88 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        TextView timeView = findViewById(R.id.time);
-        TextView dateView = findViewById(R.id.date);
-        String time_template = getString(R.string.time_template);
-        String date_template = getString(R.string.date_template);
+        timeView = findViewById(R.id.time);
+        dateView = findViewById(R.id.date);
 
-        Calendar calendar = Calendar.getInstance();
-
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat timeFormat = new SimpleDateFormat(time_template);
-        @SuppressLint("SimpleDateFormat")
-        SimpleDateFormat dateFormat = new SimpleDateFormat(date_template);
+        timeFormat = new SimpleDateFormat(getString(R.string.time_template));
+        dateFormat = new SimpleDateFormat(getString(R.string.date_template));
 
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (activityStarted) {
-                    String time = timeFormat.format(new Date());
-                    String baseDate = dateFormat.format(new Date());
-                    int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-                    if (lastTime == null || !lastTime.equals(time)) {
-                        timeView.setText(time);
-                        lastTime = time;
-                    }
-                    if (lastWeekDay != weekDay) {
-                        lastWeekDay = weekDay;
-                        lastWeekDayText = getWeekDayText(weekDay);
-                    }
-                    String date = baseDate + " " + lastWeekDayText;
-                    if (lastDate == null || !lastDate.equals(date)) {
-                        dateView.setText(date);
-                        lastDate = date;
-                    }
-                    if (activityStarted)
-                        handler.postDelayed(this, 100);
-                }
-            }
-        };
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         activityStarted = false;
+        handler.removeCallbacks(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         activityStarted = true;
-        handler.postDelayed(runnable, 0);
-
+        run();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            View decorView = getWindow().getDecorView();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                // Set the content to appear under the system bars so that the
-                // content doesn't resize when the system bars hide and show.
-                int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        // Hide the nav bar and status bar
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-                }
-                decorView.setSystemUiVisibility(visibility);
-            }
+            hideSystemUI();
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onResume() {
         super.onResume();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE
-                            // Set the content to appear under the system bars so that the
-                            // content doesn't resize when the system bars hide and show.
-                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            // Hide the nav bar and status bar
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN);
-        }
+        hideSystemUI();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        handler.removeCallbacks(runnable);
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            // Set the content to appear under the system bars so that the
+            // content doesn't resize when the system bars hide and show.
+            int visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    // Hide the nav bar and status bar
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            }
+            decorView.setSystemUiVisibility(visibility);
+        }
     }
 
     /**
-     * @param dayNumber calendar获取的星期
-     * @return 星期几的文字
+     * @param weekDay Number of the day of the week
+     * @return Text of the day of the week
      */
-    private String getWeekDayText(int dayNumber) {
-        int weekNameId = R.string.week_1;//case 1 在这里
-        switch (dayNumber) {
+    private String getWeekDayText(int weekDay) {
+        int dayNameId = R.string.week_1;//case 1 在这里
+        switch (weekDay) {
             case Calendar.MONDAY:
-                weekNameId = R.string.week_2;
+                dayNameId = R.string.week_2;
                 break;
             case Calendar.TUESDAY:
-                weekNameId = R.string.week_3;
+                dayNameId = R.string.week_3;
                 break;
             case Calendar.WEDNESDAY:
-                weekNameId = R.string.week_4;
+                dayNameId = R.string.week_4;
                 break;
             case Calendar.THURSDAY:
-                weekNameId = R.string.week_5;
+                dayNameId = R.string.week_5;
                 break;
             case Calendar.FRIDAY:
-                weekNameId = R.string.week_6;
+                dayNameId = R.string.week_6;
                 break;
             case Calendar.SATURDAY:
-                weekNameId = R.string.week_7;
+                dayNameId = R.string.week_7;
                 break;
         }
-        return getString(weekNameId);
+        return getString(dayNameId);
     }
 
     @Override
@@ -229,5 +187,29 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return mGestureDetector.onTouchEvent(event);
+    }
+
+    @Override
+    public void run() {
+        if (activityStarted) {
+            String time = timeFormat.format(new Date());
+            String baseDate = dateFormat.format(new Date());
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+            if (lastTime == null || !lastTime.equals(time)) {
+                timeView.setText(time);
+                lastTime = time;
+            }
+            if (lastWeekDay != weekDay) {
+                lastWeekDay = weekDay;
+                lastWeekDayText = getWeekDayText(weekDay);
+            }
+            String date = baseDate + " " + lastWeekDayText;
+            if (lastDate == null || !lastDate.equals(date)) {
+                dateView.setText(date);
+                lastDate = date;
+            }
+            if (activityStarted)
+                handler.postDelayed(this, 100);
+        }
     }
 }
