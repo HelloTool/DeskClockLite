@@ -27,6 +27,10 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
     private Runnable runnable;
     private SharedPreferences sharedPreferences;
     private GestureDetector mGestureDetector;
+    private int lastWeekDay;
+    private String lastWeekDayText;
+    private String lastTime;
+    private String lastDate;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -35,7 +39,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         lightTheme = sharedPreferences.getBoolean("light_theme", false);
-        if (lightTheme)
+        if (lightTheme)//亮色主题
             setTheme(R.style.Theme_DeskClockLite_Light);
         else
             setTheme(R.style.Theme_DeskClockLite);
@@ -45,45 +49,53 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         mGestureDetector.setIsLongpressEnabled(true);
         FrameLayout mainLayout = findViewById(R.id.mainLayout);
         mainLayout.setFocusable(true);
-        mainLayout.setClickable(true);
+        //mainLayout.setClickable(true);
         mainLayout.setLongClickable(true);
         mainLayout.setOnTouchListener(this);
 
-        if (Build.VERSION.SDK_INT < 16) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
+        if (Build.VERSION.SDK_INT < 16)
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         TextView timeView = findViewById(R.id.time);
         TextView dateView = findViewById(R.id.date);
         String time_template = getString(R.string.time_template);
         String date_template = getString(R.string.date_template);
+
         Calendar calendar = Calendar.getInstance();
+
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat timeFormat = new SimpleDateFormat(time_template);
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat dateFormat = new SimpleDateFormat(date_template);
 
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
                 if (activityStarted) {
-                    @SuppressLint("SimpleDateFormat")
-                    SimpleDateFormat timeFormat = new SimpleDateFormat(time_template);
                     String time = timeFormat.format(new Date());
-                    timeView.setText(time);
-
-                    @SuppressLint("SimpleDateFormat")
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(date_template);
                     String baseDate = dateFormat.format(new Date());
-                    String date = baseDate + " " + getWeekDay(calendar.get(Calendar.DAY_OF_WEEK));
-                    dateView.setText(date);
-
+                    int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+                    if (lastTime == null || !lastTime.equals(time)) {
+                        timeView.setText(time);
+                        lastTime = time;
+                    }
+                    if (lastWeekDay != weekDay) {
+                        lastWeekDay = weekDay;
+                        lastWeekDayText = getWeekDayText(weekDay);
+                    }
+                    String date = baseDate + " " + lastWeekDayText;
+                    if (lastDate == null || !lastDate.equals(date)) {
+                        dateView.setText(date);
+                        lastDate = date;
+                    }
                     if (activityStarted)
                         handler.postDelayed(this, 100);
-
                 }
             }
         };
-
     }
 
     @Override
@@ -104,9 +116,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
-            //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View decorView = getWindow().getDecorView();
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 // Set the content to appear under the system bars so that the
                 // content doesn't resize when the system bars hide and show.
@@ -122,8 +132,6 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
                 decorView.setSystemUiVisibility(visibility);
             }
         }
-
-
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -151,25 +159,29 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         handler.removeCallbacks(runnable);
     }
 
-    private String getWeekDay(int dayNumber) {
+    /**
+     * @param dayNumber calendar获取的星期
+     * @return 星期几的文字
+     */
+    private String getWeekDayText(int dayNumber) {
         int weekNameId = R.string.week_1;//case 1 在这里
         switch (dayNumber) {
-            case 2:
+            case Calendar.MONDAY:
                 weekNameId = R.string.week_2;
                 break;
-            case 3:
+            case Calendar.TUESDAY:
                 weekNameId = R.string.week_3;
                 break;
-            case 4:
+            case Calendar.WEDNESDAY:
                 weekNameId = R.string.week_4;
                 break;
-            case 5:
+            case Calendar.THURSDAY:
                 weekNameId = R.string.week_5;
                 break;
-            case 6:
+            case Calendar.FRIDAY:
                 weekNameId = R.string.week_6;
                 break;
-            case 7:
+            case Calendar.SATURDAY:
                 weekNameId = R.string.week_7;
                 break;
         }
@@ -203,8 +215,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         editor.apply();
 
         // 重启活动
-        Intent intent = new Intent(this, this.getClass());
-        startActivity(intent);
+        startActivity(new Intent(this, this.getClass()));
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
