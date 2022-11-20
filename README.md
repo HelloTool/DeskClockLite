@@ -16,9 +16,3 @@ This repositories mainly uses [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Li
 
 ## 下载 Download
 您可以进入 [发布](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) 下载
-
-> 注：
-> 本仓库在 `v1.3` 版本后更改为 GitLab 仓库，因此您在Github可能无法下载 `v1.3` 之后的版本
-
-> Note:
-> This warehouse is changed to a GitLab warehouse after the `v1.3` version, so you may not be able to download the version after the `v1.3` version in Github
