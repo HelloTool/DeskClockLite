@@ -11,8 +11,9 @@ Some codes may not be implemented well. I hope you can tell me in issues.
 对于亮色模式，您可以长按背景启用它。<br>
 For a bright theme, you can press and hold the background to enable it.
 ## 关于镜像仓库 About Image Repositories
-本仓库以 [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Lite/) 为主， [Github](https://github.com/Jesse205/Desk-Clock-Lite) 为镜像，暂无 Gitee 镜像。
+本仓库以 [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Lite/) 为主， [Github](https://github.com/Jesse205/Desk-Clock-Lite) 为镜像，暂无 Gitee 镜像。<br>
 This repositories mainly uses [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Lite/), [Github](https://github.com/Jesse205/Desk-Clock-Lite) as the image, and there is no Gitee image.
 
 ## 下载 Download
-您可以进入 [发布](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) 下载
+您可以进入 [发布](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) 下载。<br>
+You can enter [Releases](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) to download.<br>
