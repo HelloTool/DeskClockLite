@@ -1,5 +1,5 @@
 # 桌面时钟 Lite | Desk Clock Lite
-##  | Introduction
+## 介绍 | Introduction
 这是我第二个使用 Java 编写的安卓软件<br>
 This is my second Android application written in Java.
 
