@@ -8,9 +8,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -19,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener, Runnable {
+public class MainActivity extends Activity implements View.OnTouchListener, GestureDetector.OnGestureListener, Runnable, ViewTreeObserver.OnGlobalLayoutListener {
     private boolean lightTheme = false;
     private boolean activityStarted = false;
     private Handler handler;
@@ -32,11 +34,13 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
 
     private SimpleDateFormat timeFormat;
     private SimpleDateFormat dateFormat;
-
+    private View decorView;
+    private FrameLayout mainLayout;
     private TextView timeView;
     private TextView dateView;
+    private int screenWidthDp;
 
-    private Calendar calendar = Calendar.getInstance();
+    private final Calendar calendar = Calendar.getInstance();
 
     @SuppressLint({"ClickableViewAccessibility", "SimpleDateFormat"})
     @Override
@@ -49,18 +53,16 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
             setTheme(R.style.Theme_DeskClockLite_Light);
         else
             setTheme(R.style.Theme_DeskClockLite);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        decorView = getWindow().getDecorView();
         setContentView(R.layout.activity_main);
+
         mGestureDetector = new GestureDetector(this);
         mGestureDetector.setIsLongpressEnabled(true);
-        FrameLayout mainLayout = findViewById(R.id.mainLayout);
-        mainLayout.setLongClickable(true);
+        mainLayout = findViewById(R.id.mainLayout);
         mainLayout.setOnTouchListener(this);
-
-        if (Build.VERSION.SDK_INT < 16)
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        mainLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
         timeView = findViewById(R.id.time);
         dateView = findViewById(R.id.date);
@@ -69,6 +71,8 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         dateFormat = new SimpleDateFormat(getString(R.string.date_template));
 
         handler = new Handler();
+
+
     }
 
     @Override
@@ -99,8 +103,18 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
         hideSystemUI();
     }
 
+    private float dp2px(int value) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, value, getResources().getDisplayMetrics());
+    }
+
+    private int px2dp(float value) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return (int) (value / scale);
+    }
+
+
     private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             // Set the content to appear under the system bars so that the
             // content doesn't resize when the system bars hide and show.
@@ -113,6 +127,7 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             }
+
             decorView.setSystemUiVisibility(visibility);
         }
     }
@@ -153,7 +168,6 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
 
     @Override
     public void onShowPress(MotionEvent e) {
-
     }
 
     @Override
@@ -186,6 +200,8 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP)
+            hideSystemUI();
         return mGestureDetector.onTouchEvent(event);
     }
 
@@ -195,21 +211,74 @@ public class MainActivity extends Activity implements View.OnTouchListener, Gest
             String time = timeFormat.format(new Date());
             String baseDate = dateFormat.format(new Date());
             int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
-            if (lastTime == null || !lastTime.equals(time)) {
-                timeView.setText(time);
-                lastTime = time;
-            }
             if (lastWeekDay != weekDay) {
                 lastWeekDay = weekDay;
                 lastWeekDayText = getWeekDayText(weekDay);
             }
             String date = baseDate + " " + lastWeekDayText;
+
+            if (activityStarted)
+                handler.postDelayed(this, 100);
+
+            if (lastTime == null || !lastTime.equals(time)) {
+                timeView.setText(time);
+                lastTime = time;
+            }
             if (lastDate == null || !lastDate.equals(date)) {
                 dateView.setText(date);
                 lastDate = date;
             }
-            if (activityStarted)
-                handler.postDelayed(this, 100);
         }
     }
+
+    @Override
+    public void onGlobalLayout() {
+        int newScreenWidthDp = px2dp(mainLayout.getMeasuredWidth());
+        if (newScreenWidthDp != screenWidthDp) {
+            screenWidthDp = newScreenWidthDp;
+            int timeSize;
+            int dateSize;
+            int dateMarginDp;
+            if (screenWidthDp >= 1600) {
+                timeSize = 360;
+                dateSize = 48;
+                dateMarginDp = 56;
+            } else if (screenWidthDp >= 1280) {
+                timeSize = 288;
+                dateSize = 34;
+                dateMarginDp = 40;
+            } else if (screenWidthDp >= 800) {
+                timeSize = 192;
+                dateSize = 20;
+                dateMarginDp = 24;
+            } else if (screenWidthDp >= 600) {
+                timeSize = 144;
+                dateSize = 20;
+                dateMarginDp = 24;
+            } else if (screenWidthDp >= 400) {
+                timeSize = 96;
+                dateSize = 18;
+                dateMarginDp = 16;
+            } else if (screenWidthDp >= 320) {
+                timeSize = 80;
+                dateSize = 18;
+                dateMarginDp = 16;
+            } else if (screenWidthDp >= 240) {
+                timeSize = 60;
+                dateSize = 16;
+                dateMarginDp = 16;
+            } else {
+                timeSize = 44;
+                dateSize = 12;
+                dateMarginDp = 24;
+            }
+            int dateMargin = (int) dp2px(dateMarginDp);
+            timeView.setTextSize(timeSize);
+            dateView.setTextSize(dateSize);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) dateView.getLayoutParams();
+            layoutParams.setMargins(dateMargin, dateMargin, dateMargin, dateMargin);
+            dateView.setLayoutParams(layoutParams);
+        }
+    }
+
 }
