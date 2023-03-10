@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">桌面时钟 Lite</string>
     <string name="date_default">12月31日 星期二</string>
-    <string name="date_template">MM月dd日</string>
+    <string name="date_template">MM月dd日 EEEE</string>
     <string name="week_1">星期日</string>
     <string name="week_2">星期一</string>
     <string name="week_3">星期二</string>

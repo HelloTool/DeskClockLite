@@ -5,14 +5,14 @@ plugins {
 android {
     namespace 'com.jesse205.deskclock.lite'
     compileSdk 33
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         applicationId "com.jesse205.deskclock.lite"
-        minSdk 9
+        minSdk 8
         targetSdk 33
-        versionCode 5
-        versionName "1.4"
-        generatedDensities = []
+        versionCode 6
+        versionName "1.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled false
     }
@@ -22,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            multiDexEnabled false
 
         }
     }
@@ -29,6 +30,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {

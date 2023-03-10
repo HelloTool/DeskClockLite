@@ -8,22 +8,26 @@
     android:focusable="true"
     android:longClickable="true"
     tools:context=".MainActivity">
-
     <TextView
         android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
+        android:autoSizeMaxTextSize="360sp"
+        android:autoSizeMinTextSize="44sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:maxLines="1"
         android:text="@string/time_default"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="80sp" />
-
+        android:textSize="80sp"
+        tools:targetApi="o" />
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="16dp"
+        android:padding="16dp"
         android:text="@string/date_default"
         android:textSize="18sp" />
 
