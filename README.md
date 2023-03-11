@@ -26,3 +26,7 @@ This repositories mainly uses [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Li
 
 您可以进入 [发布](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) 下载。<br>
 You can enter [Releases](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases) to download.<br>
+
+## 感谢 | Thanks
+
+* __[IconPark](https://iconpark.oceanengine.com/official)__: 软件图标
