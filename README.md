@@ -1,11 +1,16 @@
 # 桌面时钟 Lite | Desk Clock Lite
 
+![GitHub](https://img.shields.io/github/license/Jesse205/Desk-Clock-Lite)
+
+![哈兔 Box 功能](https://img.shields.io/badge/%E5%93%88%E5%85%94%20Box-%E5%8A%9F%E8%83%BD-blue)
+![Edde 学习系列](https://img.shields.io/badge/Edde%20%E5%AD%A6%E4%B9%A0-%E7%B3%BB%E5%88%97-blue)
+
 ## 介绍 | Introduction
 
 这是我第二个使用 Java 编写的安卓软件<br>
 This is my second Android application written in Java.
 
-编写这个软件的目的是利用旧手机。软件向前兼容至 Android 2.3，因此您可以在您几乎所有的安卓设备上安装它（前提是您的设备支持安装第三方软件）。<br>
+编写这个软件的目的是利用旧手机。软件向前兼容至 Android 2.3，可能也兼容 Android 2.2，因此您可以在您几乎所有的安卓设备上安装它（前提是您的设备支持安装第三方软件）。<br>
 The purpose of making it is to use waste. It is backward compatible with Android 2.3 and can be used on many Android phones.
 
 一些代码可能实现得不是那么的好。希望您可以在 issues 内纠正我一些问题。<br>
@@ -30,3 +35,8 @@ You can enter [Releases](https://gitlab.com/Jesse205/Desk-Clock-Lite/-/releases)
 ## 感谢 | Thanks
 
 * __[IconPark](https://iconpark.oceanengine.com/official)__: 软件图标
+
+## 交流 | Communicate
+
+* QQ 群 - [Edde 学习桌交流群](https://jq.qq.com/?_wv=1027&k=xBZAOI2D)
+* QQ 群 - [Edde 综合交流群](https://jq.qq.com/?_wv=1027&k=54XFVLSq)
