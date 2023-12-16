@@ -50,6 +50,12 @@
 | 240dp（手机） | 16dp     | 16dp |
 | 0dp（手表）   | 12dp     | 48dp |
 
+## 系列项目
+
+- [桌面时钟 Lite for OpenHarmony](https://gitee.com/Jesse205/DeskClockLiteForOpenHarmony)（Gitee）
+- [桌面时钟 Lite for Android](https://gitlab.com/Jesse205/Desk-Clock-Lite)（GitLab）
+- [桌面时钟 Lite for 浏览器](https://gitee.com/Jesse205/Jesse205/tree/master/deskclocklite)（Gitee）
+
 ## 感谢
 
 - **[IconPark](https://iconpark.oceanengine.com/official)**: 软件图标

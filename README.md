@@ -48,6 +48,12 @@ This repositories mainly uses [GitLab](https://gitlab.com/Jesse205/Desk-Clock-Li
 | 240dp（Phone）  | 16dp      | 16dp   |
 | 0dp（Watch）    | 12dp      | 48dp   |
 
+## Series of projects
+
+- [Desk Clock Lite for OpenHarmony](https://gitee.com/Jesse205/DeskClockLiteForOpenHarmony)（Gitee）
+- [Desk Clock Lite for Android](https://gitlab.com/Jesse205/Desk-Clock-Lite)（GitLab）
+- [Desk Clock Lite for Browser](https://gitee.com/Jesse205/Jesse205/tree/master/deskclocklite)（Gitee）
+
 ## Thanks
 
 - **[IconPark](https://iconpark.oceanengine.com/official)**: App icon
