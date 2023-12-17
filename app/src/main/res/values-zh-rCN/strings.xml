@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">桌面时钟 Lite</string>
+    <string name="time_default">00:00:00</string>
     <string name="date_default">12月31日 星期二</string>
+    <string name="time_template">HH:mm:ss</string>
     <string name="date_template">MM月dd日 EEEE</string>
-    <string name="week_1">星期日</string>
-    <string name="week_2">星期一</string>
-    <string name="week_3">星期二</string>
-    <string name="week_4">星期三</string>
-    <string name="week_5">星期四</string>
-    <string name="week_6">星期五</string>
-    <string name="week_7">星期六</string>
 </resources>

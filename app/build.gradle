@@ -4,8 +4,7 @@ plugins {
 
 android {
     namespace 'com.jesse205.deskclock.lite'
-    compileSdk 33
-    buildToolsVersion '33.0.0'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.jesse205.deskclock.lite"
@@ -17,18 +16,36 @@ android {
         multiDexEnabled false
     }
 
+    def localSigningConfig
+    if (rootProject.file("keystore.properties").isFile()) {
+        def keystoreProperties = new Properties()
+        keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+        localSigningConfig = signingConfigs.create("config") {
+            storeFile = file(keystoreProperties["storeFile"])
+            storePassword = keystoreProperties["storePassword"]
+            keyAlias = keystoreProperties["keyAlias"]
+            keyPassword = keystoreProperties["keyPassword"]
+        }
+    } else {
+        localSigningConfig = signingConfigs.debug
+    }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             multiDexEnabled false
-
+            signingConfig = localSigningConfig
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        buildConfig = true
+        viewBinding = false
     }
 
 }

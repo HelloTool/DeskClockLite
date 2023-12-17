@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:windowBackground"
     android:focusable="true"
     android:longClickable="true"
     tools:context=".MainActivity">
+
     <TextView
         android:id="@+id/time"
         android:layout_width="match_parent"
@@ -18,17 +18,19 @@
         android:autoSizeTextType="uniform"
         android:gravity="center"
         android:maxLines="1"
-        android:text="@string/time_default"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="80sp"
-        tools:targetApi="o" />
+        tools:padding="16dp"
+        tools:targetApi="o"
+        tools:text="@string/time_default"
+        tools:textSize="80sp" />
+
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:padding="16dp"
-        android:text="@string/date_default"
-        android:textSize="18sp" />
+        tools:padding="16dp"
+        tools:text="@string/date_default"
+        tools:textSize="18sp" />
 
 </FrameLayout>
