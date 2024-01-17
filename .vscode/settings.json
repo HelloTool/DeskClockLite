@@ -1,10 +1,11 @@
 {
-    "markdownlint.config": {
-        "default": true,
-        "MD033": {
-            "allowed_elements": [
-                "br"
-            ]
-        }
-    }
+  "markdownlint.config": {
+    "default": true,
+    "MD033": false,
+    "MD041": false
+},
+"cSpell.words": [
+    "Edde",
+    "playstore"
+]
 }
