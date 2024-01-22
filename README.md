@@ -4,7 +4,7 @@
 
 # Desk Clock Lite
 
-[![GitLab repository](https://img.shields.io/badge/GitLab-repository-FC6D26?logo=gitlab)](https://github.com/HelloTool/DeskClockLite)
+[![GitLab repository](https://img.shields.io/badge/GitLab-repository-FC6D26?logo=gitlab)](https://gitlab.com/HelloTool/DeskClockLitee)
 [![GitHub repository](https://img.shields.io/badge/GitHub-repository-0969DA?logo=github)](https://github.com/HelloTool/DeskClockLite)
 [![Gitee repository](https://img.shields.io/badge/Gitee-repository-C71D23?logo=gitee)](https://gitee.com/HelloTool/DeskClockLite)
 

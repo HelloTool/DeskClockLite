@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es3",
+    "ignoreDeprecations": "5.0",
+    "allowJs": true,
+    "strict": true,
+    "lib": ["DOM", "ESNext"],
+    "types": ["mini-css-extract-plugin"],
+  },
+  "include": ["src/**/*.ts", "src/**/*.css"],
+}

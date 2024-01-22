@@ -1,0 +1,21 @@
+{
+  "name": "desk-clock-lite",
+  "version": "1.0.0",
+  "description": "A simple desk clock app",
+  "packageManager": "pnpm@8.14.1",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"Error: no test specified\" && exit 1",
+    "build:android": "echo \"Error: no test specified\" && exit 1",
+    "build:web": "cd web && pnpm build",
+    "dev:web": "cd web && pnpm serve"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": {
+    "name": "Jesse205",
+    "email": "2055675594@qq.com"
+  },
+  "license": "MIT"
+}

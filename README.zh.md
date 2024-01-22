@@ -4,7 +4,7 @@
 
 # 桌面时钟 Lite
 
-[![GitLab 仓库](https://img.shields.io/badge/GitLab-仓库-FC6D26?logo=gitlab)](https://github.com/HelloTool/DeskClockLite)
+[![GitLab 仓库](https://img.shields.io/badge/GitLab-仓库-FC6D26?logo=gitlab)](https://gitlab.com/HelloTool/DeskClockLite)
 [![GitHub 仓库](https://img.shields.io/badge/GitHub-仓库-0969DA?logo=github)](https://github.com/HelloTool/DeskClockLite)
 [![Gitee 仓库](https://img.shields.io/badge/Gitee-仓库-C71D23?logo=gitee)](https://gitee.com/HelloTool/DeskClockLite)
 
